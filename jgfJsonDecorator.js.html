@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>jgfJsonDecorator.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="JgfEdge.html">JgfEdge</a><ul class='methods'><li data-type='method'><a href="JgfEdge.html#isEqualTo">isEqualTo</a></li></ul></li><li><a href="JgfGraph.html">JgfGraph</a><ul class='methods'><li data-type='method'><a href="JgfGraph.html#addEdge">addEdge</a></li><li data-type='method'><a href="JgfGraph.html#addEdges">addEdges</a></li><li data-type='method'><a href="JgfGraph.html#addNode">addNode</a></li><li data-type='method'><a href="JgfGraph.html#addNodes">addNodes</a></li><li data-type='method'><a href="JgfGraph.html#getEdgesByNodes">getEdgesByNodes</a></li><li data-type='method'><a href="JgfGraph.html#getNodeById">getNodeById</a></li><li data-type='method'><a href="JgfGraph.html#removeEdge">removeEdge</a></li><li data-type='method'><a href="JgfGraph.html#removeNode">removeNode</a></li></ul></li><li><a href="JgfJsonDecorator.html">JgfJsonDecorator</a><ul class='methods'><li data-type='method'><a href="JgfJsonDecorator.html#._edgesToJson">_edgesToJson</a></li><li data-type='method'><a href="JgfJsonDecorator.html#._graphFromJson">_graphFromJson</a></li><li data-type='method'><a href="JgfJsonDecorator.html#._nodesToJson">_nodesToJson</a></li><li data-type='method'><a href="JgfJsonDecorator.html#.fromJson">fromJson</a></li><li data-type='method'><a href="JgfJsonDecorator.html#.toJson">toJson</a></li></ul></li><li><a href="JgfMultiGraph.html">JgfMultiGraph</a><ul class='methods'><li data-type='method'><a href="JgfMultiGraph.html#addGraph">addGraph</a></li></ul></li><li><a href="JgfNode.html">JgfNode</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">jgfJsonDecorator.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const _ = require('deepdash')(require('lodash'));
+const check = require('check-types');
+const { JgfNode } = require('./jgfNode');
+const { JgfEdge } = require('./jgfEdge');
+const { JgfGraph } = require('./jgfGraph');
+const { JgfMultiGraph } = require('./jgfMultiGraph');
+
+/**
+ * Transforms graphs or multigraphs to json or vice versa.
+ *
+ * Note that this is just called decorator for semantic reasons and does not follow the GoF decorator design pattern.
+ */
+class JgfJsonDecorator {
+
+    /**
+     * Creates a JGF graph or multigraph from JSON.
+     * @param {object} json
+     * @returns {JgfGraph|JgfMultiGraph}
+     */
+    static fromJson(json) {
+        if (check.assigned(json.graph)) {
+            return this._graphFromJson(json.graph);
+        }
+
+        if (check.assigned(json.graphs)) {
+            let graph = new JgfMultiGraph(json.type, json.label, json.metadata);
+            _.each(json.graphs, (graphJson) => {
+                graph.addGraph(this._graphFromJson(graphJson))
+            });
+
+            return graph;
+        }
+
+        throw new Error('Passed json has to to have a "graph" or "graphs" property.');
+    }
+
+    /**
+     * Creates a single JGF graph from JSON.
+     * @param {object} graphJson
+     * @returns {JgfGraph}
+     */
+    static _graphFromJson(graphJson) {
+        let graph = new JgfGraph(graphJson.type, graphJson.label, graphJson.directed, graphJson.metadata);
+
+        _.each(graphJson.nodes, (node) => {
+            graph.addNode(new JgfNode(node.id, node.label, node.metadata));
+        });
+
+        _.each(graphJson.edges, (edge) => {
+            graph.addEdge(new JgfEdge(edge.source, edge.target, edge.relation, edge.label, edge.metadata, edge.directed));
+        });
+
+        return graph;
+    }
+
+    static _guardAgainstInvalidGraphObject(graph) {
+        if (!check.instance(graph, JgfGraph) &amp;&amp; !check.instance(graph, JgfMultiGraph)) {
+            throw new Error('JgfJsonDecorator can only decorate graphs or multigraphs.');
+        }
+    }
+
+    /**
+     * Transforms either a graph or a multigraph object to a JSON representation as per the spec.
+     * @param {JgfGraph|JgfMultiGraph} graph
+     * @returns {object}
+     */
+    static toJson(graph) {
+        this._guardAgainstInvalidGraphObject(graph);
+
+        const isSingleGraph = check.instance(graph, JgfGraph);
+
+        let allGraphsJson = {
+            graphs: [],
+        };
+
+        this._transformGraphsToJson(graph, allGraphsJson);
+
+        if (isSingleGraph) {
+            return this._removeNullValues({ graph: allGraphsJson.graphs[0] });
+        }
+
+        allGraphsJson.type = graph.type;
+        allGraphsJson.label = graph.label;
+        allGraphsJson.metadata = graph.metadata;
+
+        return this._removeNullValues(allGraphsJson);
+    }
+
+    static _transformGraphsToJson(graph, allGraphsJson) {
+        let normalizedGraph = this._normalizeToMultiGraph(graph);
+        _.each(normalizedGraph.graphs, (singleGraph) => {
+
+            let singleGraphJson = {
+                type: singleGraph.type,
+                label: singleGraph.label,
+                directed: singleGraph.directed,
+                metadata: singleGraph.metadata,
+                nodes: [],
+                edges: [],
+            };
+
+            this._nodesToJson(singleGraph, singleGraphJson);
+            this._edgesToJson(singleGraph, singleGraphJson);
+
+            allGraphsJson.graphs.push(singleGraphJson);
+        });
+    }
+
+    static _removeNullValues(json) {
+        return _.filterDeep(json, (value) => value !== null);
+    }
+
+    /**
+     * @param {JgfGraph} graph
+     * @param {object} json
+     */
+    static _edgesToJson(graph, json) {
+        _.each(graph.edges, (edge) => {
+            json.edges.push({
+                source: edge.source,
+                target: edge.target,
+                relation: edge.relation,
+                label: edge.label,
+                metadata: edge.metadata,
+                directed: edge.directed,
+            });
+        });
+    }
+
+    /**
+     * @param {JgfGraph} graph
+     * @param {object} json
+     */
+    static _nodesToJson(graph, json) {
+        _.each(graph.nodes, (node) => {
+            json.nodes.push({
+                id: node.id,
+                label: node.label,
+                metadata: node.metadata,
+            });
+        });
+    }
+
+    static _normalizeToMultiGraph(graph) {
+        let normalizedGraph = graph;
+        if (check.instance(graph, JgfGraph)) {
+            normalizedGraph = new JgfMultiGraph();
+            normalizedGraph.addGraph(graph);
+        }
+
+        return normalizedGraph;
+    }
+}
+
+module.exports = {
+    JgfJsonDecorator,
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 29 2019 21:37:05 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>
