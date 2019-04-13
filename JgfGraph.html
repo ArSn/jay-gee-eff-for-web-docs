@@ -47,7 +47,7 @@
         JgfGraph
         </h2>
         
-            <div class="class-description">A single Jgf graph instance, always contained in a parent JgfContainer</div>
+            <div class="class-description">An graph object represents the full graph and contains all nodes and edges that the graph consists of.</div>
         
     
 </header>
@@ -174,7 +174,7 @@
                 </td>
             
 
-            <td class="description last">graph classification</td>
+            <td class="description last">Graph classification.</td>
         </tr>
 
     
@@ -201,7 +201,7 @@
                 </td>
             
 
-            <td class="description last">a text display for the graph</td>
+            <td class="description last">A text display for the graph.</td>
         </tr>
 
     
@@ -230,7 +230,7 @@
                 </td>
             
 
-            <td class="description last">true for a directed graph, false for an undirected graph</td>
+            <td class="description last">Pass true for a directed graph, false for an undirected graph.</td>
         </tr>
 
     
@@ -262,7 +262,7 @@
                 </td>
             
 
-            <td class="description last">about the graph</td>
+            <td class="description last">Custom graph metadata.</td>
         </tr>
 
     
@@ -359,7 +359,7 @@
 
 
 <div class="description">
-    Returns all edges
+    Returns all edges.
 </div>
 
 
@@ -422,7 +422,7 @@
 
 
 <div class="description">
-    Set the graph meta data
+    Sets the graph meta data.
 </div>
 
 
@@ -485,7 +485,7 @@
 
 
 <div class="description">
-    Returns the graph meta data
+    Returns the graph meta data.
 </div>
 
 
@@ -548,7 +548,7 @@
 
 
 <div class="description">
-    Returns all nodes
+    Returns all nodes.
 </div>
 
 
@@ -581,7 +581,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line135">line 135</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line137">line 137</a>
     </li></ul></dd>
     
 
@@ -621,7 +621,7 @@
 
 
 <div class="description">
-    Adds an edge between a source node and a target node.
+    Adds an edge to the graph.
 </div>
 
 
@@ -675,7 +675,7 @@
 
             
 
-            <td class="description last">Source node id</td>
+            <td class="description last">The edge to be added.</td>
         </tr>
 
     
@@ -717,7 +717,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line154">line 154</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line156">line 156</a>
     </li></ul></dd>
     
 
@@ -757,7 +757,7 @@
 
 
 <div class="description">
-    Adds multiple edges
+    Adds multiple edges to the graph.
 </div>
 
 
@@ -811,7 +811,7 @@
 
             
 
-            <td class="description last">A collection of Jgf edge objects.</td>
+            <td class="description last">A collection of Jgf edge objects to be added.</td>
         </tr>
 
     
@@ -853,7 +853,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line92">line 92</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -893,7 +893,7 @@
 
 
 <div class="description">
-    Adds a new node
+    Adds a node to the graph.
 </div>
 
 
@@ -967,6 +967,18 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Error if the node already exists.
+    
+    </div>
+
+
+    
 
 
 
@@ -989,7 +1001,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line105">line 105</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1041,7 @@
 
 
 <div class="description">
-    Adds multiple nodes
+    Adds multiple nodes to the graph.
 </div>
 
 
@@ -1083,7 +1095,7 @@
 
             
 
-            <td class="description last">A collection of Jgf node objects.</td>
+            <td class="description last">A collection of Jgf node objects to be added.</td>
         </tr>
 
     
@@ -1103,6 +1115,18 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Error if one of nodes already exists.
+    
+    </div>
+
+
+    
 
 
 
@@ -1125,7 +1149,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line174">line 174</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -1284,7 +1308,7 @@
                 </td>
             
 
-            <td class="description last"></td>
+            <td class="description last">If passed, only edges having this relation will be returned.</td>
         </tr>
 
     
@@ -1326,7 +1350,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line127">line 127</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line129">line 129</a>
     </li></ul></dd>
     
 
@@ -1366,7 +1390,7 @@
 
 
 <div class="description">
-    Get a node by a node id.
+    Get a node by a node ID.
 </div>
 
 
@@ -1420,7 +1444,7 @@
 
             
 
-            <td class="description last">Unique node id</td>
+            <td class="description last">Unique node ID.</td>
         </tr>
 
     
@@ -1462,7 +1486,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line164">line 164</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -1502,7 +1526,7 @@
 
 
 <div class="description">
-    Removes existing graph edge.
+    Removes existing edge from the graph.
 </div>
 
 
@@ -1598,7 +1622,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line115">line 115</a>
+        <a href="jgfGraph.js.html">jgfGraph.js</a>, <a href="jgfGraph.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -1638,7 +1662,7 @@
 
 
 <div class="description">
-    Removes an existing graph node
+    Removes an existing node from the graph.
 </div>
 
 
@@ -1737,7 +1761,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Apr 12 2019 21:48:08 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 13 2019 12:28:14 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
